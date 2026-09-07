@@ -4,11 +4,26 @@
   "description": "Browse the git commit history of a Markdown file with Prev/Next navigation.",
   "version": "0.0.1",
   "publisher": "luckberonne",
+  "license": "MIT",
+  "icon": "images/icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/luckberonne/HistoricMD.git"
+  },
+  "bugs": {
+    "url": "https://github.com/luckberonne/HistoricMD/issues"
+  },
   "engines": {
     "vscode": "^1.85.0"
   },
   "categories": [
     "Other"
+  ],
+  "keywords": [
+    "markdown",
+    "git",
+    "history",
+    "diff"
   ],
   "activationEvents": [],
   "main": "./out/extension.js",
