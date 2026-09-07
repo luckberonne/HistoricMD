@@ -1,0 +1,53 @@
+{
+  "name": "historicmd",
+  "displayName": "HistoricMD",
+  "description": "Browse the git commit history of a Markdown file with Prev/Next navigation.",
+  "version": "0.0.1",
+  "publisher": "luckberonne",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "historicmd.viewHistory",
+        "title": "HistoricMD: Ver historial de commits",
+        "icon": "$(history)"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "historicmd.viewHistory",
+          "when": "resourceLangId == markdown",
+          "group": "navigation"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "historicmd.viewHistory",
+          "when": "resourceLangId == markdown"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.85.0",
+    "@types/node": "^20.11.0",
+    "@types/markdown-it": "^14.1.2",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "markdown-it": "^14.1.0"
+  }
+}

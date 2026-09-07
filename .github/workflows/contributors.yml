@@ -1,0 +1,37 @@
+name: Update contributors
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "README.md"
+
+permissions:
+  contents: write
+
+jobs:
+  update-contributors:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Regenerate CONTRIBUTORS.md
+        run: python scripts/update_contributors.py
+
+      - name: Commit changes
+        run: |
+          git config user.name "canvas-bot"
+          git config user.email "canvas-bot@users.noreply.github.com"
+          if git diff --quiet CONTRIBUTORS.md; then
+            echo "Sin cambios en CONTRIBUTORS.md"
+          else
+            git add CONTRIBUTORS.md
+            git commit -m "chore: update contributors table [skip ci]"
+            git push
+          fi
