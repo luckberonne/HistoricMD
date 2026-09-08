@@ -7,10 +7,21 @@ navegando de a un commit por vez con botones **◀ Anterior** / **Siguiente ▶*
 
 1. Abrí un archivo `.md` que esté versionado en un repo git.
 2. Ejecutá el comando **HistoricMD: Ver historial de commits** (paleta de comandos,
-   o el ícono de historial en la barra de título del editor).
+   el ícono de historial en la barra de título del editor, o el atajo
+   `Ctrl+Alt+H` / `Cmd+Alt+H` en Mac). Si `historicmd.autoOpen` está activado
+   (por defecto), el panel también se abre solo al abrir el archivo.
 3. Se abre un panel con el contenido del archivo renderizado tal como estaba en
    cada commit. Usá los botones para moverte al commit anterior o siguiente
    que tocó ese archivo (se sigue el historial con `git log --follow`).
+
+## Configuración
+
+- `historicmd.fileExtensions` (`string[]`, default `["md"]`): extensiones de
+  archivo (sin el punto) donde aparece el botón/atajo y se puede auto-abrir el
+  historial. Por ejemplo `["md", "markdown", "mdx"]`.
+- `historicmd.autoOpen` (`boolean`, default `true`): abre el panel
+  automáticamente al abrir un archivo con alguna de esas extensiones, si está
+  versionado en git.
 
 ## Desarrollo
 

@@ -25,7 +25,9 @@
     "history",
     "diff"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
@@ -39,16 +41,42 @@
       "editor/title": [
         {
           "command": "historicmd.viewHistory",
-          "when": "resourceLangId == markdown",
+          "when": "historicmd.supportedFile",
           "group": "navigation"
         }
       ],
       "commandPalette": [
         {
           "command": "historicmd.viewHistory",
-          "when": "resourceLangId == markdown"
+          "when": "historicmd.supportedFile"
         }
       ]
+    },
+    "keybindings": [
+      {
+        "command": "historicmd.viewHistory",
+        "key": "ctrl+alt+h",
+        "mac": "cmd+alt+h",
+        "when": "historicmd.supportedFile"
+      }
+    ],
+    "configuration": {
+      "title": "HistoricMD",
+      "properties": {
+        "historicmd.fileExtensions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": ["md"],
+          "description": "Extensiones de archivo (sin el punto) en las que HistoricMD se activa: muestra el botón de historial, el atajo de teclado y, si está habilitado, abre el panel automáticamente. Ejemplo: [\"md\", \"markdown\", \"mdx\"]."
+        },
+        "historicmd.autoOpen": {
+          "type": "boolean",
+          "default": true,
+          "description": "Abre automáticamente el panel de historial al abrir un archivo con alguna de las extensiones de historicmd.fileExtensions, si está versionado en git."
+        }
+      }
     }
   },
   "scripts": {

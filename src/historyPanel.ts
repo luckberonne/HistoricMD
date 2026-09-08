@@ -11,45 +11,58 @@ function getNonce(): string {
   return text;
 }
 
+export interface ShowOptions {
+  preserveFocus?: boolean;
+}
+
 export class HistoryPanel {
   public static currentPanel: HistoryPanel | undefined;
 
   private readonly panel: vscode.WebviewPanel;
   private readonly md: MarkdownIt;
   private index = 0;
+  private fsPath: string;
 
   public static async createOrShow(
+    fsPath: string,
     repoRoot: string,
     relPath: string,
     commits: Commit[],
-    fileName: string
+    fileName: string,
+    options: ShowOptions = {}
   ): Promise<void> {
     const column = vscode.window.activeTextEditor?.viewColumn;
 
     if (HistoryPanel.currentPanel) {
-      HistoryPanel.currentPanel.panel.reveal(column);
-      HistoryPanel.currentPanel.reset(repoRoot, relPath, commits, fileName);
+      HistoryPanel.currentPanel.panel.reveal(column, options.preserveFocus ?? false);
+      HistoryPanel.currentPanel.reset(fsPath, repoRoot, relPath, commits, fileName);
       return;
     }
 
     const panel = vscode.window.createWebviewPanel(
       'historicmd.history',
       `Historial: ${fileName}`,
-      column ?? vscode.ViewColumn.Beside,
+      { viewColumn: column ?? vscode.ViewColumn.Beside, preserveFocus: options.preserveFocus ?? false },
       { enableScripts: true, retainContextWhenHidden: true }
     );
 
-    HistoryPanel.currentPanel = new HistoryPanel(panel, repoRoot, relPath, commits, fileName);
+    HistoryPanel.currentPanel = new HistoryPanel(panel, fsPath, repoRoot, relPath, commits, fileName);
+  }
+
+  public static isShowingFile(fsPath: string): boolean {
+    return HistoryPanel.currentPanel?.fsPath === fsPath;
   }
 
   private constructor(
     panel: vscode.WebviewPanel,
+    fsPath: string,
     private repoRoot: string,
     private relPath: string,
     private commits: Commit[],
     private fileName: string
   ) {
     this.panel = panel;
+    this.fsPath = fsPath;
     this.md = new MarkdownIt({ html: false, linkify: true, breaks: false });
 
     this.panel.webview.html = this.getHtmlShell();
@@ -67,7 +80,14 @@ export class HistoryPanel {
     void this.update();
   }
 
-  private reset(repoRoot: string, relPath: string, commits: Commit[], fileName: string): void {
+  private reset(
+    fsPath: string,
+    repoRoot: string,
+    relPath: string,
+    commits: Commit[],
+    fileName: string
+  ): void {
+    this.fsPath = fsPath;
     this.repoRoot = repoRoot;
     this.relPath = relPath;
     this.commits = commits;
