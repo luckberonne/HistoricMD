@@ -2,7 +2,7 @@
   "name": "historicmd",
   "displayName": "HistoricMD",
   "description": "Browse the git commit history of a Markdown file with Prev/Next navigation.",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "publisher": "luckberonne",
   "license": "MIT",
   "icon": "images/icon.png",
