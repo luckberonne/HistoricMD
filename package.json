@@ -2,7 +2,7 @@
   "name": "historicmd",
   "displayName": "HistoricMD",
   "description": "Browse the git commit history of a Markdown file with Prev/Next navigation.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "publisher": "luckberonne",
   "license": "MIT",
   "icon": "images/icon.png",
@@ -68,7 +68,9 @@
           "items": {
             "type": "string"
           },
-          "default": ["md"],
+          "default": [
+            "md"
+          ],
           "description": "Extensiones de archivo (sin el punto) en las que HistoricMD se activa: muestra el botón de historial, el atajo de teclado y, si está habilitado, abre el panel automáticamente. Ejemplo: [\"md\", \"markdown\", \"mdx\"]."
         },
         "historicmd.autoOpen": {
