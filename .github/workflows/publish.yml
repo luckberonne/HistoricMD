@@ -5,6 +5,9 @@ on:
     tags:
       - 'v*'
 
+permissions:
+  contents: write
+
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -22,7 +25,19 @@ jobs:
       - name: Compile
         run: npm run compile
 
-      - name: Publish
-        run: npx --yes @vscode/vsce publish -p "$VSCE_PAT"
+      - name: Package .vsix
+        id: package
+        run: |
+          npx --yes @vscode/vsce package
+          echo "vsix=$(ls *.vsix)" >> "$GITHUB_OUTPUT"
+
+      - name: Publish to Marketplace
+        run: npx --yes @vscode/vsce publish -p "$VSCE_PAT" --packagePath "${{ steps.package.outputs.vsix }}"
         env:
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ steps.package.outputs.vsix }}
+          generate_release_notes: true
